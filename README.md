@@ -2,15 +2,15 @@
 
 Compile CoffeeScript files with inline source maps.
 
-    $ coffee-inline-map -h
 ```
+$ coffee-inline-map -h
 Usage: coffee-inline-map [options] file.coffee
 
 Available options:
   -h, --help            output usage information & exit
   -V, --version         output the version number & exit
   -o, --output [FILE]   write result to a FILE instead of stdout
-      --no-maps         don't include inline source maps (why?)
+      --no-map          don't include inline source map (why?)
 
 ```
 
@@ -25,22 +25,22 @@ Available options:
 
 ## Compilation
 
-	$ make compile
+    $ make compile
 
 ## browserify & make-commonjs-depend
 
 To verify the text below you'll need to clone this repo, run 'make
 compile', install
 [make-commonjs-depend](https://github.com/gromnitsky/make-commonjs-depend)
-and browserify.
+& browserify.
 
-Look into repo's `test/data` directory. I'll wait.
+Look into repo's `test/data` directory. Ignore `*.should` files. I'll wait.
 
 Then
 
-    $ cd src
-    $ ls *coffee
 ```
+$ cd src
+$ ls *coffee
 a.coffee
 b.litcoffee
 main.coffee
@@ -54,8 +54,8 @@ compilations of our all CoffeeScript files.
 We want to rebuild `public/bundle.js` only & only on .coffee files
 change. That's obviously a job for make.
 
-    $ cat Makefile
 ```
+$ cat Makefile
 COFFEE_COMPILER := ../../../bin/coffee-inline-map
 
 out := ../public
@@ -93,8 +93,8 @@ clean:
 
 To create a dependency tree, we run
 
-    $ make depend
 ```
+$ make depend
 ../../../bin/coffee-inline-map a.coffee -o a.js
 ../../../bin/coffee-inline-map main.coffee -o main.js
 ../../../bin/coffee-inline-map b.litcoffee -o b.js
@@ -102,8 +102,8 @@ make-commonjs-depend *js -o js.mk
 
 ```
 
-    $ cat js.mk
 ```
+$ cat js.mk
 a.js:
 b.js:
 main.js: \
@@ -118,8 +118,8 @@ coffescript files.
 
 Then compile the bundle
 
-    $ make compile
 ```
+$ make compile
 ../../../bin/coffee-inline-map main.coffee -o main.js
 browserify -d main.js -o ../public/bundle.js
 
@@ -130,17 +130,17 @@ when at first glance it should rather not.
 
 Run again
 
-    $ make compile
 ```
+$ make compile
 make[1]: Nothing to be done for `compile'.
 
 ```
 
 Notice that the nothing was recompiled for the 2nd time. That's our goal!
 
-    $ touch a.coffee
-    $ make compile
 ```
+$ touch a.coffee
+$ make compile
 ../../../bin/coffee-inline-map a.coffee -o a.js
 ../../../bin/coffee-inline-map main.coffee -o main.js
 browserify -d main.js -o ../public/bundle.js

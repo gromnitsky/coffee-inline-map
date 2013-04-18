@@ -3,8 +3,8 @@ changequote([,])dnl
 
 Compile CoffeeScript files with inline source maps.
 
-    $ coffee-inline-map -h
 ```
+$ coffee-inline-map -h
 syscmd([../../../bin/coffee-inline-map -h])
 ```
 
@@ -19,22 +19,22 @@ syscmd([../../../bin/coffee-inline-map -h])
 
 ## Compilation
 
-	$ make compile
+    $ make compile
 
 ## browserify & make-commonjs-depend
 
 To verify the text below you'll need to clone this repo, run 'make
 compile', install
 [[make-commonjs-depend]](https://github.com/gromnitsky/make-commonjs-depend)
-and browserify.
+& browserify.
 
-Look into repo's `test/data` directory. I'll wait.
+Look into repo's `test/data` directory. Ignore `*.should` files. I'll wait.
 
 Then
 
-    $ cd src
-    $ ls *coffee
 ```
+$ cd src
+$ ls *coffee
 syscmd([ls *coffee])
 ```
 
@@ -45,20 +45,20 @@ compilations of our all CoffeeScript files.
 We want to rebuild `public/bundle.js` only & only on .coffee files
 change. That's obviously a job for make.
 
-    $ cat Makefile
 ```
+$ cat Makefile
 include([Makefile])
 ```
 
 To create a dependency tree, we run
 
-    $ make depend
 ```
+$ make depend
 syscmd([make depend | egrep -v '(Entering|Leaving) directory'])
 ```
 
-    $ cat js.mk
 ```
+$ cat js.mk
 include([js.mk])
 ```
 
@@ -68,8 +68,8 @@ coffescript files.
 
 Then compile the bundle
 
-    $ make compile
 ```
+$ make compile
 syscmd([make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
@@ -78,16 +78,16 @@ when at first glance it should rather not.
 
 Run again
 
-    $ make compile
 ```
+$ make compile
 syscmd([make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
 Notice that the nothing was recompiled for the 2nd time. That's our goal!
 
-    $ touch a.coffee
-    $ make compile
 ```
+$ touch a.coffee
+$ make compile
 syscmd([touch a.coffee; make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
