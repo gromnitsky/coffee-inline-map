@@ -1,0 +1,6 @@
+(function() {
+  module.exports = 'hi';
+
+}).call(this);
+
+//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGF0YS9zcmMvYi5saXRjb2ZmZWUiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJkYXRhL3NyYy9iLmxpdGNvZmZlZSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFSTtDQUFBLENBQUEsQ0FBaUIsQ0FBakIsRUFBTSxDQUFOO0NBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJMaXRlcmF0ZSBDb2ZmZWVTY3JpcHQ/XG5cbiAgICBtb2R1bGUuZXhwb3J0cyA9ICdoaSdcblxuTm90IGEgZmFuLlxuIl19
