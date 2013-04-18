@@ -1,3 +1,4 @@
+M4 := m4
 COFFEE := node_modules/.bin/coffee
 MOCHA := node_modules/.bin/mocha
 OPTS :=
@@ -19,7 +20,15 @@ test: compile
 lib/%.js: %.coffee
 	$(COFFEE) -o $(out) -c $<
 
-compile: node_modules $(js_temp)
+README.html: README.md
+	pandoc $< -o $@
+
+README.md: README.m4.md
+	cd test/data/src ; \
+		$(MAKE) clean; \
+		$(M4) ../../../$< > ../../../$@
+
+compile: node_modules $(js_temp) README.md
 
 clean:
 	rm -f $(js_temp)

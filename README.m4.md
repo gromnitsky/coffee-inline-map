@@ -1,17 +1,11 @@
+changequote([,])dnl
 # coffee-inline-map
 
 Compile CoffeeScript files with inline source maps.
 
     $ coffee-inline-map -h
 ```
-Usage: coffee-inline-map [options] file.coffee
-
-Available options:
-  -h, --help            output usage information & exit
-  -V, --version         output the version number & exit
-  -o, --output [FILE]   write result to a FILE instead of stdout
-      --no-maps         don't include inline source maps (why?)
-
+syscmd([../../../bin/coffee-inline-map -h])
 ```
 
 ## Features
@@ -31,7 +25,7 @@ Available options:
 
 To verify the text below you'll need to clone this repo, run 'make
 compile', install
-[make-commonjs-depend](https://github.com/gromnitsky/make-commonjs-depend)
+[[make-commonjs-depend]](https://github.com/gromnitsky/make-commonjs-depend)
 and browserify.
 
 Look into repo's `test/data` directory. I'll wait.
@@ -41,10 +35,7 @@ Then
     $ cd src
     $ ls *coffee
 ```
-a.coffee
-b.litcoffee
-main.coffee
-
+syscmd([ls *coffee])
 ```
 
 Here `main.coffee` depends on `a.coffee` & `b.litcoffee`. For out site
@@ -56,60 +47,19 @@ change. That's obviously a job for make.
 
     $ cat Makefile
 ```
-COFFEE_COMPILER := ../../../bin/coffee-inline-map
-
-out := ../public
-js_temp := \
-	$(patsubst %.coffee,%.js,$(wildcard *.coffee)) \
-	$(patsubst %.litcoffee,%.js,$(wildcard *.litcoffee))
-bundle := $(out)/bundle.js
-
-.PHONY: depend compile compile-js clean
-
-all: compile
-
-%.js: %.coffee
-	$(COFFEE_COMPILER) $< -o $@
-
-%.js: %.litcoffee
-	$(COFFEE_COMPILER) $< -o $@
-
-depend: compile-js
-	make-commonjs-depend *js -o js.mk
-
--include js.mk
-
-compile-js: $(js_temp)
-compile: compile-js $(bundle)
-
-$(bundle): main.js
-	@mkdir -p $(out)
-	browserify -d $< -o $@
-
-clean:
-	rm -f js.mk $(js_temp) $(bundle)
-
+include([Makefile])
 ```
 
 To create a dependency tree, we run
 
     $ make depend
 ```
-../../../bin/coffee-inline-map a.coffee -o a.js
-../../../bin/coffee-inline-map main.coffee -o main.js
-../../../bin/coffee-inline-map b.litcoffee -o b.js
-make-commonjs-depend *js -o js.mk
-
+syscmd([make depend | egrep -v '(Entering|Leaving) directory'])
 ```
 
     $ cat js.mk
 ```
-a.js:
-b.js:
-main.js: \
-  a.js \
-  b.js
-
+include([js.mk])
 ```
 
 It's unfortunate that make-commonjs-depend supports only
@@ -120,9 +70,7 @@ Then compile the bundle
 
     $ make compile
 ```
-../../../bin/coffee-inline-map main.coffee -o main.js
-browserify -d main.js -o ../public/bundle.js
-
+syscmd([make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
 As a little homework, try to guess why `main.js` was recompiled here,
@@ -132,8 +80,7 @@ Run again
 
     $ make compile
 ```
-make[1]: Nothing to be done for `compile'.
-
+syscmd([make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
 Notice that the nothing was recompiled for the 2nd time. That's our goal!
@@ -141,10 +88,7 @@ Notice that the nothing was recompiled for the 2nd time. That's our goal!
     $ touch a.coffee
     $ make compile
 ```
-../../../bin/coffee-inline-map a.coffee -o a.js
-../../../bin/coffee-inline-map main.coffee -o main.js
-browserify -d main.js -o ../public/bundle.js
-
+syscmd([touch a.coffee; make compile | egrep -v '(Entering|Leaving) directory'])
 ```
 
 Yay! Then open `public/index.html` in Chrome and switch to the console
