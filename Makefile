@@ -31,8 +31,6 @@ README.md: README.m4.md
 compile: node_modules $(js_temp) README.md
 
 clean:
-	rm -f $(js_temp)
-	[ -r $(out) ] && rmdir $(out); :
 
 clobber: clean
 	rm -rf node_modules
