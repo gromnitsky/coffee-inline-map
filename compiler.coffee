@@ -24,12 +24,12 @@ parse_opts = (src) ->
     ["-h", "--help", "output usage information & exit"]
     ["-V", "--version", "output the version number & exit"]
     ["-o", "--output [FILE]", "write result to a FILE instead of stdout"]
-    ["--no-maps", "don't include inline source maps (why?)"]
+    ["--no-map", "don't include inline source map (why?)"]
   ]
   p = new optparse.OptionParser opt
   p.banner = "Usage: #{conf.progname} [options] file.coffee"
 
-  p.on 'no-maps', -> conf.maps = false
+  p.on 'no-map', -> conf.maps = false
 
   p.on 'help', ->
     console.log p.toString()
@@ -95,4 +95,4 @@ exports.main = ->
       errx 1, "output stream: #{err.message}"
 
   conf.output.write js
-  conf.output.end() unless conf.output.isTTY
+  conf.output.end() if conf.output.path
