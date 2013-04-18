@@ -45,11 +45,11 @@ parse_opts = (src) ->
 
   [(p.parse src), p]
 
-
 is_literate = (fname) ->
+  return true if '.litcoffee' == path.extname fname
   false
 
-# Return a string or crash.
+# Crash or return a string.
 compile = (file) ->
   try
     src = (fs.readFileSync file).toString()
