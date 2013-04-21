@@ -3,15 +3,22 @@ changequote([,])dnl
 
 Compile CoffeeScript files with inline source maps.
 
-```
-$ coffee-inline-map -h
-syscmd([../../../bin/coffee-inline-map -h])
-```
-
 ## Features
 
 * Error reporting similar to the original CoffeeScript compiler.
 * `.litcoffee` support.
+
+## Example
+
+```
+$ cat a.coffee
+include([a.coffee])
+$ coffee-inline-map a.coffee | fold -w72
+syscmd([../../../bin/coffee-inline-map a.coffee | fold -w72])
+
+$ coffee-inline-map -h
+syscmd([../../../bin/coffee-inline-map -h])
+```
 
 ## Installation
 
@@ -109,12 +116,23 @@ targets.
    files to decide whether it's time to recompile.
 2. Error reporting.
 
-## Why are you using outdated make instead of cake or jake? It's not 1977 anymore!
+## Why are you using outdated make instead of cake, jake or grunt? It's not 1977 anymore!
 
 facepalm.jpg
 
 Dude. <br/>
 Just take a walk for 10 minutes & no one will hurt.
+
+## BUGS
+
+* Reading from stdin doesn't work in Windows.
+
+## NEWS
+
+### 0.1.0
+
+* Add reading from stdin.
+* Fix an unheplful crash for EPIPE error.
 
 ## License
 

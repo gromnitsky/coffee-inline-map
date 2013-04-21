@@ -2,9 +2,34 @@
 
 Compile CoffeeScript files with inline source maps.
 
+## Features
+
+* Error reporting similar to the original CoffeeScript compiler.
+* `.litcoffee` support.
+
+## Example
+
 ```
+$ cat a.coffee
+module.exports = (something) -> console.log something
+
+$ coffee-inline-map a.coffee | fold -w72
+(function() {
+  module.exports = function(something) {
+    return console.log(something);
+  };
+
+}).call(this);
+
+//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaW
+xlIjoiYS5jb2ZmZWUiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJhLmNvZmZlZSJdLC
+JuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtDQUFBLENBQUEsQ0FBaUIsR0FBWCxDQUFOLE
+VBQWtCO0NBQXNCLEVBQVIsSUFBTyxFQUFQLEVBQUE7Q0FBaEMsRUFBaUI7Q0FBakIiLCJzb3
+VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IChzb21ldGhpbmcpIC0+IGNvbnNvbG
+UubG9nIHNvbWV0aGluZ1xuIl19
+
 $ coffee-inline-map -h
-Usage: coffee-inline-map [options] file.coffee
+Usage: coffee-inline-map [options] [file.coffee]
 
 Available options:
   -h, --help            output usage information & exit
@@ -13,11 +38,6 @@ Available options:
       --no-map          don't include inline source map (why?)
 
 ```
-
-## Features
-
-* Error reporting similar to the original CoffeeScript compiler.
-* `.litcoffee` support.
 
 ## Installation
 
@@ -165,12 +185,23 @@ targets.
    files to decide whether it's time to recompile.
 2. Error reporting.
 
-## Why are you using outdated make instead of cake or jake? It's not 1977 anymore!
+## Why are you using outdated make instead of cake, jake or grunt? It's not 1977 anymore!
 
 facepalm.jpg
 
 Dude. <br/>
 Just take a walk for 10 minutes & no one will hurt.
+
+## BUGS
+
+* Reading from stdin doesn't work in Windows.
+
+## NEWS
+
+### 0.1.0
+
+* Add reading from stdin.
+* Fix an unheplful crash for EPIPE error.
 
 ## License
 
