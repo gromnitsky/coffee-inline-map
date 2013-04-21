@@ -91,8 +91,9 @@ exports.main = ->
   # create output stream only after a successful compilation
   unless conf.output instanceof Stream
     conf.output = fs.createWriteStream conf.output
-    conf.output.on 'error', (err) ->
-      errx 1, "output stream: #{err.message}"
+
+  conf.output.on 'error', (err) ->
+    errx 1, "output stream: #{err.message}"
 
   conf.output.write js
   conf.output.end() if conf.output.path
