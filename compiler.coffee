@@ -27,7 +27,7 @@ parse_opts = (src) ->
     ["--no-map", "don't include inline source map (why?)"]
   ]
   p = new optparse.OptionParser opt
-  p.banner = "Usage: #{conf.progname} [options] file.coffee"
+  p.banner = "Usage: #{conf.progname} [options] [file.coffee]"
 
   p.on 'no-map', -> conf.maps = false
 
@@ -49,29 +49,36 @@ is_literate = (fname) ->
   return true if '.litcoffee' == path.extname fname
   false
 
-# Crash or return a string.
-compile = (file) ->
+read_file = (fname) ->
   try
-    src = (fs.readFileSync file).toString()
+    fs.readFileSync(fname).toString()
   catch e
-    errx 1, "#{file} reading: #{e.message}"
+    errx 1, "#{fname} reading: #{e.message}"
+
+# TODO: fix this for Windows
+read_stdin = ->
+  read_file '/dev/stdin'
+
+# Crash or return a string.
+compile = (fname, fcontent) ->
+  return '' if fcontent.match /^\s*$/
 
   try
-    compiled = coffee.compile src, {
+    compiled = coffee.compile fcontent, {
       sourceMap: conf.maps
-      generatedFile: file
+      generatedFile: fname
       inline: true
-      literate: is_literate(file)
+      literate: is_literate(fname)
     }
   catch e
     inColor = if process.stderr.isTTY then true else false
-    console.error (coffee_helpers.prettyErrorMessage e, file, src, inColor)
+    console.error (coffee_helpers.prettyErrorMessage e, fname, fcontent, inColor)
     process.exit 1
 
   if conf.maps
     comment = convert
       .fromJSON(compiled.v3SourceMap)
-      .setProperty('sources', [file])
+      .setProperty('sources', [fname])
       .toComment()
 
     "#{compiled.js}\n#{comment}"
@@ -82,11 +89,11 @@ compile = (file) ->
 exports.main = ->
   [args, p] = parse_opts process.argv
   args = args[2..-1]
-  if args.length != 1
-    console.log p.toString()
-    process.exit 1
 
-  js = compile args[0]
+  if args.length
+    js = compile args[0], read_file args[0]
+  else
+    js = compile '[stdin]', read_stdin()
 
   # create output stream only after a successful compilation
   unless conf.output instanceof Stream

@@ -7,6 +7,14 @@ suite 'Cmd output', ->
     process.chdir __dirname
     @cmd = '../bin/coffee-inline-map'
 
+  test 'empty stdin', ->
+    r = execSync.exec "echo '' | #{@cmd}"
+    assert.equal '', r.stdout
+
+  test 'js with source map from usual coffee from stdin', ->
+    r = execSync.exec "#{@cmd} < data/src/a.coffee"
+    assert.equal (fs.readFileSync 'data/src/a.js.stdin.should').toString(), r.stdout
+
   test 'js with source map from usual coffee', ->
     r = execSync.exec "#{@cmd} data/src/a.coffee"
     assert.equal (fs.readFileSync 'data/src/a.js.should').toString(), r.stdout
