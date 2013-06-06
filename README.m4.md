@@ -129,6 +129,12 @@ Just take a walk for 10 minutes & no one will hurt.
 
 ## NEWS
 
+### 0.2.0
+
+* Update for CoffeeScript 1.6.3.
+* Recognize `.coffee.md` extension.
+* `-l` CLO.
+
 ### 0.1.0
 
 * Add reading from stdin.

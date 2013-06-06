@@ -35,6 +35,7 @@ Available options:
   -h, --help            output usage information & exit
   -V, --version         output the version number & exit
   -o, --output [FILE]   write result to a FILE instead of stdout
+  -l, --literate        treat stdin as literate style coffee-script
       --no-map          don't include inline source map (why?)
 
 ```
@@ -197,6 +198,12 @@ Just take a walk for 10 minutes & no one will hurt.
 * Reading from stdin doesn't work in Windows.
 
 ## NEWS
+
+### 0.2.0
+
+* Update for CoffeeScript 1.6.3.
+* Recognize `.coffee.md` extension.
+* `-l` CLO.
 
 ### 0.1.0
 
