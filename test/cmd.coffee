@@ -26,3 +26,11 @@ suite 'Cmd output', ->
   test 'js with source map from litcoffee', ->
     r = execSync.exec "#{@cmd} data/src/b.litcoffee"
     assert.equal (fs.readFileSync 'data/src/b.js.should').toString(), r.stdout
+
+  test 'error due to not recognizing litcoffee', ->
+    r = execSync.exec "#{@cmd} < data/src/b.coffee.md"
+    assert.equal 1, r.code
+
+  test 'js with source map from litcoffee from stdin', ->
+    r = execSync.exec "#{@cmd} -l < data/src/b.coffee.md"
+    assert.equal (fs.readFileSync 'data/src/b.js.stdin.should').toString(), r.stdout
