@@ -14,6 +14,7 @@ conf =
 
   maps: true
   output: process.stdout
+  stdin_literate: false
 
 errx = (exit_code, msg) ->
   console.error "#{conf.progname} error: #{msg}" unless conf.quiet
@@ -24,6 +25,7 @@ parse_opts = (src) ->
     ["-h", "--help", "output usage information & exit"]
     ["-V", "--version", "output the version number & exit"]
     ["-o", "--output [FILE]", "write result to a FILE instead of stdout"]
+    ["-l", "--literate", "treat stdin as literate style coffee-script"]
     ["--no-map", "don't include inline source map (why?)"]
   ]
   p = new optparse.OptionParser opt
@@ -41,13 +43,11 @@ parse_opts = (src) ->
 
   p.on 'output', (unused, val) -> conf.output = val
 
+  p.on 'literate', -> conf.stdin_literate = true
+
   p.on (o) -> errx 1, "unknown option #{o}"
 
   [(p.parse src), p]
-
-is_literate = (fname) ->
-  return true if '.litcoffee' == path.extname fname
-  false
 
 read_file = (fname) ->
   try
@@ -60,16 +60,20 @@ read_stdin = ->
   read_file '/dev/stdin'
 
 # Crash or return a string.
-compile = (fname, fcontent) ->
+compile = (fname, fcontent, opt = {}) ->
   return '' if fcontent.match /^\s*$/
 
+  options = {
+    sourceMap: conf.maps
+    generatedFile: fname
+    inline: true
+    literate: coffee_helpers.isLiterate(fname)
+  }
+  # override computed options from user provided opt object
+  options[key] = val for key,val of opt
+
   try
-    compiled = coffee.compile fcontent, {
-      sourceMap: conf.maps
-      generatedFile: fname
-      inline: true
-      literate: is_literate(fname)
-    }
+    compiled = coffee.compile fcontent, options
   catch e
     inColor = if process.stderr.isTTY then true else false
     console.error (coffee_helpers.prettyErrorMessage e, fname, fcontent, inColor)
@@ -93,7 +97,7 @@ exports.main = ->
   if args.length
     js = compile args[0], read_file args[0]
   else
-    js = compile '[stdin]', read_stdin()
+    js = compile '[stdin]', read_stdin(), { literate: conf.stdin_literate }
 
   # create output stream only after a successful compilation
   unless conf.output instanceof Stream
