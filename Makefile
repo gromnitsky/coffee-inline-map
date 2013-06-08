@@ -15,6 +15,7 @@ node_modules: package.json
 	touch $@
 
 test: compile
+	$(MAKE) -C test/data compile
 	$(MOCHA) --compilers coffee:coffee-script -u tdd test $(OPTS)
 
 lib/%.js: %.coffee
@@ -31,6 +32,9 @@ README.md: README.m4.md
 compile: node_modules $(js_temp) README.md
 
 clean:
+	$(MAKE) -C test/data clean
+# we include generated js with the npm package
+#	rm $(js_temp)
 
 clobber: clean
 	rm -rf node_modules
