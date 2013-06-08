@@ -34,3 +34,7 @@ suite 'Cmd output', ->
   test 'js with source map from litcoffee from stdin', ->
     r = execSync.exec "#{@cmd} -l < data/src/b.coffee.md"
     assert.equal (fs.readFileSync 'data/src/b.js.stdin.should').toString(), r.stdout
+
+  test 'bare js with source map usual coffee', ->
+    r = execSync.exec "#{@cmd} -b data/src/a.coffee"
+    assert.equal (fs.readFileSync 'data/src/a.js.bare.should').toString(), r.stdout
