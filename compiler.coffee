@@ -15,6 +15,8 @@ conf =
   maps: true
   output: process.stdout
   stdin_literate: false
+  bare: false
+  header: true
 
 errx = (exit_code, msg) ->
   console.error "#{conf.progname} error: #{msg}" unless conf.quiet
@@ -26,12 +28,15 @@ parse_opts = (src) ->
     ["-V", "--version", "output the version number & exit"]
     ["-o", "--output [FILE]", "write result to a FILE instead of stdout"]
     ["-l", "--literate", "treat stdin as literate style coffee-script"]
+    ["-b", "--bare", "compile without a top-level function wrapper"]
     ["--no-map", "don't include inline source map (why?)"]
   ]
   p = new optparse.OptionParser opt
   p.banner = "Usage: #{conf.progname} [options] [file.coffee]"
 
   p.on 'no-map', -> conf.maps = false
+
+  p.on 'bare', -> conf.bare = true
 
   p.on 'help', ->
     console.log p.toString()
@@ -66,6 +71,8 @@ compile = (fname, fcontent, opt = {}) ->
   options = {
     sourceMap: conf.maps
     generatedFile: fname
+    bare: conf.bare
+    header: conf.header
     inline: true
     literate: coffee_helpers.isLiterate(fname)
   }
@@ -75,7 +82,7 @@ compile = (fname, fcontent, opt = {}) ->
   try
     compiled = coffee.compile fcontent, options
   catch e
-    inColor = if process.stderr.isTTY then true else false
+    inColor = Boolean process.stderr.isTTY
     console.error (coffee_helpers.prettyErrorMessage e, fname, fcontent, inColor)
     process.exit 1
 
