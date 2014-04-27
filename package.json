@@ -1,6 +1,6 @@
 {
 	"name": "coffee-inline-map",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Compile CoffeeScript files with inline source maps",
 	"keywords": [
 		"build",
@@ -20,13 +20,14 @@
 	"preferGlobal": true,
 	"bin": "./bin/coffee-inline-map",
 	"dependencies": {
-		"optparse": "~1.0.4",
-		"convert-source-map": "~0.2.5",
-		"coffee-script": "~1.6.3"
+		"optparse": "^1.0.5",
+		"convert-source-map": "^0.3.3",
+		"coffee-script": "^1.7.1"
 	},
 	"devDependencies": {
-		"mocha": "~1.8.2",
-		"execSync": "0.0.4"
+		"mocha": "^1.18.2",
+		"execSync": "^1.0.1-pre",
+		"browserify": "^3.44.2"
 	},
 	"engines": {
 		"node": ">= 0.10.0"

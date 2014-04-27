@@ -31,9 +31,8 @@ syscmd([../../../bin/coffee-inline-map -h])
 ## browserify & make-commonjs-depend
 
 To verify the text below you'll need to clone this repo, run 'make
-compile', install
-[[make-commonjs-depend]](https://github.com/gromnitsky/make-commonjs-depend)
-& browserify.
+compile' & install
+[[make-commonjs-depend]](https://github.com/gromnitsky/make-commonjs-depend).
 
 Look into repo's `test/data` directory. Ignore `*.should` files. I'll wait.
 
@@ -128,6 +127,11 @@ Just take a walk for 10 minutes & no one will hurt.
 * Reading from stdin doesn't work in Windows.
 
 ## NEWS
+
+### 0.4.0
+
+* CoffeeScript 1.7.1
+* 'New' source map syntax.
 
 ### 0.3.0
 

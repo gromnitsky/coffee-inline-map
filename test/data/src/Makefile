@@ -1,4 +1,5 @@
 COFFEE_COMPILER := ../../../bin/coffee-inline-map
+BROWSERIFY := ../../../node_modules/.bin/browserify
 
 out := ../public
 js_temp := \
@@ -26,7 +27,7 @@ compile: compile-js $(bundle)
 
 $(bundle): main.js
 	@mkdir -p $(out)
-	browserify -d $< -o $@
+	$(BROWSERIFY) -d $< -o $@
 
 clean:
 	rm -f js.mk $(js_temp) $(bundle)

@@ -16,7 +16,7 @@ node_modules: package.json
 
 test: compile
 	$(MAKE) -C test/data compile
-	$(MOCHA) --compilers coffee:coffee-script -u tdd test $(OPTS)
+	$(MOCHA) --compilers coffee:coffee-script/register -u tdd test $(OPTS)
 
 lib/%.js: %.coffee
 	$(COFFEE) -o $(out) -c $<

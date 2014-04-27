@@ -71,6 +71,7 @@ compile = (fname, fcontent, opt = {}) ->
   options = {
     sourceMap: conf.maps
     generatedFile: fname
+    filename: fname
     bare: conf.bare
     header: conf.header
     inline: true
@@ -82,8 +83,7 @@ compile = (fname, fcontent, opt = {}) ->
   try
     compiled = coffee.compile fcontent, options
   catch e
-    inColor = Boolean process.stderr.isTTY
-    console.error (coffee_helpers.prettyErrorMessage e, fname, fcontent, inColor)
+    console.error coffee_helpers.updateSyntaxError e.toString(), fcontent, fname
     process.exit 1
 
   if conf.maps
