@@ -128,6 +128,10 @@ Take a walk for 10 minutes & no one will get hurt.
 
 ## NEWS
 
+### 0.6.0
+
+* CoffeeScript 1.9.0.
+
 ### 0.5.0
 
 * CoffeeScript 1.8.0.
