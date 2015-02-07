@@ -184,7 +184,7 @@ targets.
 
 ## Why not just use coffeeify plugin for browserify?
 
-1. browserify can't (& shouldn't) check what has changed in our source
+1. browserify can't (& shouldn't) look for the changes in our source
    files to decide whether it's time to recompile.
 2. Error reporting.
 
@@ -197,9 +197,16 @@ Take a walk for 10 minutes & no one will get hurt.
 
 ## BUGS
 
-* Reading from stdin doesn't work in Windows.
+* Reading from stdin is untested under Windows.
+* Untested under iojs.
 
 ## NEWS
+
+### 0.6.1
+
+* node 0.12 is the minimum required version now.
+* _Regression_: reading interactively from stdin isn't supported (pipes
+  are ok).
 
 ### 0.6.0
 
