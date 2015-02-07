@@ -1,22 +1,22 @@
 M4 := m4
 COFFEE := node_modules/.bin/coffee
 MOCHA := node_modules/.bin/mocha
-OPTS :=
+TEST_OPTS :=
 
 out := lib
-js_temp := $(patsubst %.coffee,$(out)/%.js,$(wildcard *.coffee))
+js := $(patsubst %.coffee,$(out)/%.js,$(wildcard *.coffee))
 
-.PHONY: clobber clean compile
-
+.PHONY: all
 all: test
 
 node_modules: package.json
 	npm install
 	touch $@
 
+.PHONY: test
 test: compile
 	$(MAKE) -C test/data compile
-	$(MOCHA) --compilers coffee:coffee-script/register -u tdd test $(OPTS)
+	$(MOCHA) --compilers coffee:coffee-script/register -u tdd test/test_* $(TEST_OPTS)
 
 lib/%.js: %.coffee
 	$(COFFEE) -o $(out) -c $<
@@ -29,15 +29,29 @@ README.md: README.m4.md
 		$(MAKE) clean; \
 		$(M4) ../../../$< > ../../../$@
 
-compile: node_modules $(js_temp) README.md
+.PHONY: compile
+compile: node_modules $(js) README.md
 
+.PHONY: npm
+npm: compile
+	rm -f README.html
+	npm publish
+
+.PHONY: npm-view
+npm-view: test
+	rm -f README.html coffee-inline-map-*.tgz
+	npm pack && less coffee-inline-map-*.tgz
+	rm coffee-inline-map-*.tgz
+
+.PHONY: clean
 clean:
+	rm -f $(js)
 	$(MAKE) -C test/data clean
-# we include generated js with the npm package
-#	rm $(js_temp)
 
-clobber: clean
+.PHONY: nuke
+nuke: clean
 	rm -rf node_modules
+
 
 # Debug. Use 'gmake p-obj' to print $(obj) variable.
 p-%:
