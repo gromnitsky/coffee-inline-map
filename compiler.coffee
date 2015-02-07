@@ -7,6 +7,8 @@ coffee_helpers = require 'coffee-script/lib/coffee-script/helpers'
 convert = require 'convert-source-map'
 optparse = require 'optparse'
 
+readFileSync = require './readFileSync'
+
 conf =
   quiet: false
   progname: path.basename process.argv[1]
@@ -56,7 +58,7 @@ parse_opts = (src) ->
 
 read_file = (fname) ->
   try
-    fs.readFileSync(fname).toString()
+    readFileSync(fname).toString()
   catch e
     errx 1, "#{fname} reading: #{e.message}"
 
