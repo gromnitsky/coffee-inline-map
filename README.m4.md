@@ -111,8 +111,8 @@ targets.
 
 ## Why not just use coffeeify plugin for browserify?
 
-1. browserify can't (& shouldn't) check what has changed in our source
-   files to decide whether it's time to recompile.
+1. browserify can't (& shouldn't) check changes in our source files to
+   decide whether it's time to recompile.
 2. Error reporting.
 
 ## Why are you using outdated make instead of cake, jake, grunt, gulp or broccoli? It's not 1977 anymore!
@@ -128,9 +128,9 @@ Take a walk for 10 minutes & no one will get hurt.
 
 ## NEWS
 
-### 0.6.0
+### 0.7.0
 
-* CoffeeScript 1.9.0.
+* CoffeeScript 1.9.1.
 
 ### 0.5.0
 
