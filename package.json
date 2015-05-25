@@ -8,10 +8,7 @@
 		"source map"
 	],
 	"author": "Alexander Gromnitsky <alexander.gromnitsky@gmail.com>",
-	"license": {
-		"type": "MIT",
-		"url": "http://www.opensource.org/licenses/mit-license.php"
-	},
+	"license": "MIT",
 	"url": "https://github.com/gromnitsky/coffee-inline-map",
 	"repository": {
 		"type": "git",
