@@ -22,11 +22,11 @@ syscmd([../../../bin/coffee-inline-map -h])
 
 ## Installation
 
-    # npm install -g coffee-inline-map
+	# npm install -g coffee-inline-map
 
 ## Compilation
 
-    $ make compile
+	$ make compile
 
 ## browserify & make-commonjs-depend
 
@@ -128,9 +128,9 @@ Take a walk for 10 minutes & no one will get hurt.
 
 ## NEWS
 
-### 0.7.0
+### 0.8.0
 
-* CoffeeScript 1.9.1.
+* CoffeeScript 1.9.3.
 
 ### 0.5.0
 
