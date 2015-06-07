@@ -10,7 +10,6 @@ optparse = require 'optparse'
 conf =
   quiet: false
   progname: path.basename process.argv[1]
-  progver: JSON.parse(fs.readFileSync "#{__dirname}/../package.json").version
 
   maps: true
   output: process.stdout
@@ -21,6 +20,11 @@ conf =
 errx = (exit_code, msg) ->
   console.error "#{conf.progname} error: #{msg}" unless conf.quiet
   process.exit exit_code if exit_code
+
+user_agent = ->
+  ver = JSON.parse(fs.readFileSync "#{__dirname}/../package.json").version
+  ver_cs = require('coffee-script/lib/coffee-script/coffee-script').VERSION
+  "#{conf.progname}/#{ver} (CoffeeScript #{ver_cs}; #{process.platform}; #{process.arch}) node/#{process.versions.node}"
 
 parse_opts = (src) ->
   opt = [
@@ -43,7 +47,7 @@ parse_opts = (src) ->
     process.exit 0
 
   p.on 'version', ->
-    console.log conf.progver
+    console.log user_agent()
     process.exit 0
 
   p.on 'output', (unused, val) -> conf.output = val
